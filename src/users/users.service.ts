@@ -64,6 +64,13 @@ export class UsersService {
     return user;
   }
 
+  public async getByUsername(username: string) {
+    return await this.usersRepository.findOne({
+      where: { username: username },
+      select: ['id', 'username', 'password', 'email'],
+    });
+  }
+
   public async updateUser(id: string, req: UpdateUserDto): Promise<Partial<User>> {
     // Put id at the object to typeorm understand that is a update
     req.id = id;
@@ -120,7 +127,7 @@ export class UsersService {
   }
 
   public async deleteUser(id: string) {
-    const userDeleted = await this.usersRepository.delete(id);
+    const userDeleted = await this.usersRepository.softDelete(id);
     const isDeleted = !!userDeleted.affected || false;
 
     if (!isDeleted) {
