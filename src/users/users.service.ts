@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { hash, compareSync } from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -14,25 +14,25 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>,
   ) {}
 
-  public async createUser(req: CreateUserDto): Promise<Partial<User>> {
+  public async createUser(req: CreateUserDto): Promise<Partial<UserEntity>> {
     // Check if username already exists in database
-    const userByUsername: User | null = await this.usersRepository.findOneBy({
+    const userByUsername: UserEntity | null = await this.usersRepository.findOneBy({
       username: req.username,
     });
     if (userByUsername) throw new ConflictException('Username já existente, por favor tente outro');
 
     // Check if email already exists in database
-    const userByEmail: User | null = await this.usersRepository.findOneBy({
+    const userByEmail: UserEntity | null = await this.usersRepository.findOneBy({
       email: req.email,
     });
     if (userByEmail) throw new ConflictException('Email já existente, por favor tente outro');
 
     // Check if email already exists in database
-    const userByPhone: User | null = await this.usersRepository.findOneBy({
+    const userByPhone: UserEntity | null = await this.usersRepository.findOneBy({
       phone: req.phone,
     });
     if (userByPhone) throw new ConflictException('Telefone já existente, por favor tente outro');
@@ -41,7 +41,7 @@ export class UsersService {
     req.password = await this.hashPassword(req.password);
 
     // Throw a Errow if fail operation
-    const newUser: User = await this.usersRepository.save(req);
+    const newUser: UserEntity = await this.usersRepository.save(req);
     if (!newUser)
       throw new NotFoundException('Erro na criação do usuário, tente novamente mais tarde');
 
@@ -51,7 +51,7 @@ export class UsersService {
     return rest;
   }
 
-  public async getMe(id: string): Promise<User | null> {
+  public async getMe(id: string): Promise<UserEntity | null> {
     // Check if id exists
     if (!id) throw new BadRequestException('Id não especificado');
 
@@ -71,13 +71,13 @@ export class UsersService {
     });
   }
 
-  public async updateUser(id: string, req: UpdateUserDto): Promise<Partial<User>> {
+  public async updateUser(id: string, req: UpdateUserDto): Promise<Partial<UserEntity>> {
     // Put id at the object to typeorm understand that is a update
     req.id = id;
 
     // Check if username already exists in database
     if (req.username) {
-      const userByUsername: User | null = await this.usersRepository.findOneBy({
+      const userByUsername: UserEntity | null = await this.usersRepository.findOneBy({
         username: req.username,
       });
       if (userByUsername)
@@ -86,7 +86,7 @@ export class UsersService {
 
     // Check if email already exists in database
     if (req.email) {
-      const userByEmail: User | null = await this.usersRepository.findOneBy({
+      const userByEmail: UserEntity | null = await this.usersRepository.findOneBy({
         email: req.email,
       });
       if (userByEmail) throw new ConflictException('Email já existente, por favor tente outro');
@@ -94,7 +94,7 @@ export class UsersService {
 
     // Check if email already exists in database
     if (req.phone) {
-      const userByPhone: User | null = await this.usersRepository.findOneBy({
+      const userByPhone: UserEntity | null = await this.usersRepository.findOneBy({
         phone: req.phone,
       });
       if (userByPhone) throw new ConflictException('Telefone já existente, por favor tente outro');

@@ -1,3 +1,5 @@
+import { RestaurantsMenuModule } from './../restaurants_menu/restaurants-menu.module';
+import { RestaurantsModule } from './../restaurants/restaurants.module';
 import { AuthModule } from './../auth/auth.module';
 import { UsersModule } from './../users/users.module';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
@@ -27,6 +29,8 @@ import { AuthMiddleware } from '@/middlewares/auth.middleware';
     }),
     UsersModule,
     AuthModule,
+    RestaurantsModule,
+    RestaurantsMenuModule,
   ],
   controllers: [AppController],
   providers: [AppService],

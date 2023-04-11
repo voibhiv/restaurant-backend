@@ -1,4 +1,4 @@
-import { User } from '@/users/entities/user.entity';
+import { UserEntity } from '@/users/entities/user.entity';
 import { UsersService } from '@/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -11,7 +11,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  public async login(user: Partial<User>) {
+  public async login(user: Partial<UserEntity>) {
     const payload = {
       id: user.id,
       username: user.username,
@@ -25,8 +25,8 @@ export class AuthService {
   public async validateUser(
     username: string,
     userPassword: string,
-  ): Promise<Partial<User> | null | undefined> {
-    let user: User | null;
+  ): Promise<Partial<UserEntity> | null | undefined> {
+    let user: UserEntity | null;
 
     try {
       user = await this.usersService.getByUsername(username);
