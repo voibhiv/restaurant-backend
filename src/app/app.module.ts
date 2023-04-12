@@ -8,11 +8,13 @@ import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
+import { ResponseFormatMiddleware } from '@/middlewares/response-format.middleware';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
+      name: 'default',
       type: 'postgres',
       host: process.env.DATABASE_HOST,
       port: Number(process.env.DATABASE_PORT),
@@ -24,8 +26,8 @@ import { AuthMiddleware } from '@/middlewares/auth.middleware';
       autoLoadEntities: true,
       keepConnectionAlive: true,
       logging: false,
-      entities: ['src/entities/**/*.ts'],
-      migrations: [],
+      entities: ['dist/entities/**/*.{ts,js}'],
+      migrations: ['dist/database/migrations/**/*.{ts,js}'],
     }),
     UsersModule,
     AuthModule,
@@ -38,5 +40,6 @@ import { AuthMiddleware } from '@/middlewares/auth.middleware';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).exclude('/auth/login', '/users/create').forRoutes('*');
+    consumer.apply(ResponseFormatMiddleware).exclude('/auth/login').forRoutes('*');
   }
 }

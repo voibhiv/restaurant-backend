@@ -1,5 +1,5 @@
-import { RestaurantsEntity } from "@/restaurants/entities/restaurants.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { RestaurantsEntity } from '@/restaurants/entities/restaurants.entity';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('restaurantsMenu')
 export class RestaurantsMenuEntity {
@@ -31,21 +31,15 @@ export class RestaurantsMenuEntity {
   image: string;
 
   @Column({
-    name: 'icon',
-    nullable: false,
-    type: 'varchar',
-    length: 2200,
+    type: 'real',
   })
-  icon: string;
+  price: string;
 
-  @Column()
-  price: number;
+  @Column({
+    type: 'real',
+  })
+  type: string;
 
-  @Column()
-  type: number;
-
-  @ManyToOne(() => RestaurantsEntity, (restaurantEntity) => restaurantEntity.restaurantMenu)
-  @JoinColumn()
+  @ManyToOne(() => RestaurantsEntity, (restaurant) => restaurant.menus)
   restaurant: RestaurantsEntity;
-
 }

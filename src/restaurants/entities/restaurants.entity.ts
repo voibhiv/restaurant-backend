@@ -1,3 +1,4 @@
+import { RestaurantsMenuEntity } from '@/restaurants_menu/entities/restaurants-menu.entity';
 import {
   Column,
   CreateDateColumn,
@@ -21,8 +22,10 @@ export class RestaurantsEntity {
   })
   name: string;
 
-  @Column()
-  starts: number;
+  @Column({
+    type: 'real',
+  })
+  stars: string;
 
   @Column({
     name: 'description',
@@ -40,8 +43,10 @@ export class RestaurantsEntity {
   })
   timeToDelivery: string;
 
-  @Column()
-  priceToDelivery: number;
+  @Column({
+    type: 'real',
+  })
+  priceToDelivery: string;
 
   @Column({
     name: 'image',
@@ -59,8 +64,22 @@ export class RestaurantsEntity {
   })
   icon: string;
 
-  @Column()
-  averagePrice: number;
+  @Column({
+    nullable: true,
+    type: 'varchar',
+  })
+  phone: string;
+
+  @Column({
+    nullable: true,
+    type: 'varchar',
+  })
+  address: string;
+
+  @Column({
+    type: 'real',
+  })
+  averagePrice: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -75,8 +94,6 @@ export class RestaurantsEntity {
   })
   deletedAt: Date;
 
-  @OneToMany(() => RestaurantsEntity, (restaurantEntity) => restaurantEntity.restaurantMenu)
-  restaurantMenu: RestaurantsEntity[];
-
-
+  @OneToMany(() => RestaurantsMenuEntity, (menu) => menu.restaurant, { eager: true })
+  menus: RestaurantsMenuEntity[];
 }
