@@ -1,5 +1,5 @@
 import { JwtAuthGuard } from '@/auth/shared/jwt-auth.guard';
-import {  Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { RestaurantsService } from './restaurants.service';
 
 @Controller('restaurants')
@@ -8,7 +8,11 @@ export class RestaurantsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/')
-  public async read(@Query('search') search: string, @Query('take') take: number, @Query('skip') skip: number) {
+  public async read(
+    @Query('search') search: string,
+    @Query('take') take: number,
+    @Query('skip') skip: number,
+  ) {
     try {
       return await this.restaurantsService.getAll({ take, skip }, search);
     } catch (error) {
