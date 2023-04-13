@@ -56,7 +56,7 @@ export class UsersService {
     if (!id) throw new BadRequestException('Id não especificado');
 
     // Find user and check if was found
-    const user = this.usersRepository.findOneBy({
+    const user = await this.usersRepository.findOneBy({
       id,
     });
     if (!user) throw new NotFoundException('Usuário não encontrado');

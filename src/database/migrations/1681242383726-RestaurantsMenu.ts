@@ -8,7 +8,7 @@ export class RestaurantsMenu1681242383726 implements MigrationInterface {
     const restaurantsRepository = queryRunner.manager.getRepository(RestaurantsEntity);
     const restaurantsMenuRepository = queryRunner.manager.getRepository(RestaurantsMenuEntity);
     const allRestaurants = await restaurantsRepository.find();
-    const restaurantsIds = await allRestaurants.map((restaurant) => {
+    const restaurantsIds = allRestaurants.map((restaurant) => {
       return restaurant;
     });
 
