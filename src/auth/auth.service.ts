@@ -12,9 +12,12 @@ export class AuthService {
   ) {}
 
   public async login(user: Partial<UserEntity>) {
+
+    const allInformationUser = await this.usersService.getMe(user.id || "");
+
     const payload = {
       id: user.id,
-      username: user.username,
+      user: allInformationUser
     };
 
     return {

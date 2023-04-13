@@ -7,7 +7,7 @@ export class ResponseFormatMiddleware implements NestMiddleware {
     const originalJson = res.json;
     res.json = function (data: any) {
       const formattedData = {
-        success: res.statusCode >= 200 && res.statusCode < 300,
+        success: (res.statusCode ? res.statusCode >= 200 && res.statusCode < 300 : true) && (data && data.response && data.response.statusCode ? data.response.statusCode >= 200 && data.response.statusCode < 300 : true),
         data: data,
         message: res.locals.message,
       };

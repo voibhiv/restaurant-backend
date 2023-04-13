@@ -17,7 +17,7 @@ export class RestaurantsService {
       await this.restaurantsRepository.createQueryBuilder('restaurants');
     query.leftJoinAndSelect('restaurants.menus', 'menus');
     query.where(
-      'menus.name like :name OR menus.description like :description OR restaurants.name like :name OR restaurants.description like :description',
+      'menus.name ilike :name OR menus.description ilike :description OR restaurants.name ilike :name OR restaurants.description ilike :description',
       {
         name: `%${searchText}%`,
         description: `%${searchText}%`,

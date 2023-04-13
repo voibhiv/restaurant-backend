@@ -1,7 +1,6 @@
 import { JwtAuthGuard } from '@/auth/shared/jwt-auth.guard';
-import { Body, Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import {  Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { RestaurantsService } from './restaurants.service';
-import { PaginationDto } from '@/shared/dto/pagination.dto';
 
 @Controller('restaurants')
 export class RestaurantsController {
@@ -9,9 +8,9 @@ export class RestaurantsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/')
-  public async read(@Query('search') search: string, @Body() req: PaginationDto) {
+  public async read(@Query('search') search: string, @Query('take') take: number, @Query('skip') skip: number) {
     try {
-      return await this.restaurantsService.getAll(req, search);
+      return await this.restaurantsService.getAll({ take, skip }, search);
     } catch (error) {
       return error;
     }
